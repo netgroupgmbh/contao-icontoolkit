@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    NetGroup\IconToolkit\Classes\Services\Factories\FinderFactory: ~
+
+    NetGroup\IconToolkit\Classes\Services\Factories\TemplateFactory:
+        public: true

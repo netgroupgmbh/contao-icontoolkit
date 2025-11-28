@@ -1,0 +1,35 @@
+{
+    "name": "netgroup/icontoolkit",
+    "description": "Bei dieser Software handelt es sich um eine Erweiterung für das Open Source CMS Contao, sie bietet Werkzeuge zur Verwendung von [Font Awesome](https://fontawesome.com/). Unter anderem stellt sie ein IconPicker für das Backend und ein Modul zur Einbindung der Assets für das Frontend zur Verfügung.",
+    "license": "proprietary",
+    "type": "contao-bundle",
+    "authors": [
+        {
+            "name": "NetGroup GmbH",
+            "email": "info@netgroup.de",
+            "homepage": "http://www.netgroup.de",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "info@netgroup.de"
+    },
+    "require": {
+        "php": "^8.2",
+        "contao/core-bundle": "^5.3",
+        "esit/scopehelper": "^1.0"
+    },
+    "require-dev": {
+        "contao/test-case": "^5.3",
+        "phpunit/phpunit": "^9.6",
+        "roave/security-advisories": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "NetGroup\\IconToolkit\\": ""
+        }
+    },
+    "extra": {
+        "contao-manager-plugin": "NetGroup\\IconToolkit\\Classes\\Contao\\Manager\\Plugin"
+    }
+}

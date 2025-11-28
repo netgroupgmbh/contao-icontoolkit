@@ -1,0 +1,16 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # Helper
+    NetGroup\IconToolkit\Classes\Services\Helper\AssetHelper:
+        public: true
+
+    NetGroup\IconToolkit\Classes\Services\Helper\FileAbstractionHelper: ~
+
+    NetGroup\IconToolkit\Classes\Services\Helper\IconHelper:
+        public: true
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+            $iconsJsonPath: '/public/bundles/netgroupicontoolkit/fontawesome-free-7.1.0-web/metadata/icons.json'

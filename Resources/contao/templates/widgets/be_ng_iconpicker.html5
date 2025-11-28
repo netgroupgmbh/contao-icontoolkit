@@ -1,0 +1,17 @@
+<input type="text" name="<?= $this->strName; ?>" id="ctrl_<?= $this->strId; ?>" class="tl_text<?= $this->strClass; ?> ng_iconpicker" value="<?= $this->varValue; ?>"<?= $this->strAttributes; ?> data-action="focus->contao--scroll-offset#store" data-contao--scroll-offset-target="autoFocus" data-fieldname="<?= $this->strName; ?>"><?= $this->wizard; ?>
+<div class="ng_iconpicker_list <?= $this->strName; ?>" data-fieldname="<?= $this->strName; ?>">
+    <?php if(!empty($this->options)): ?>
+        <ul>
+            <?php foreach ($this->options as $value => $label): ?>
+                <?php $selected = $this->varValue === $value ? ' class="selected"' : ''; ?>
+
+                <li data-value="<?= $value; ?>"<?= $selected; ?>>
+                    <i class="<?= $value; ?>"></i>
+                    <span class="label">
+                        <?= $label; ?>
+                    </span>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+</div>
