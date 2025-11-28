@@ -14,3 +14,6 @@ services:
         arguments:
             $projectDir: '%kernel.project_dir%'
             $iconsJsonPath: '/public/bundles/netgroupicontoolkit/fontawesome-free-7.1.0-web/metadata/icons.json'
+
+    Esit\IconToolkit\Classes\Services\Helper\ScopeHelper:
+        public: true

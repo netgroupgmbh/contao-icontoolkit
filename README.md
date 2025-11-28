@@ -19,7 +19,6 @@ __NetGroup GmbH:__ Patrick Froch <info@netgroup.de>
 
 - php: ^8.2
 - Contao: ^4.13 | ^5.0
-- esit/scopehelper: ^1.0
 
 
 ## Installation
