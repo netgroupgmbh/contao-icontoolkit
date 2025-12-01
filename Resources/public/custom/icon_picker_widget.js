@@ -39,25 +39,25 @@ class IconPickerWidget {
      * @private
      */
     _initializeList(icoList, fieldname) {
-        const icosOfList = icoList.querySelectorAll('li')
+        const iconsOfList = icoList.querySelectorAll('li')
 
-        for (const ico of icosOfList) {
-            if (ico.classList.contains('selected')) {
-                ico.scrollIntoView({
+        for (const icon of iconsOfList) {
+            if (icon.classList.contains('selected')) {
+                icon.scrollIntoView({
                     behavior: 'smooth',
                     block: 'center'
                 })
             }
 
-            ico.addEventListener('click', (event) => {
-                const icosOfList = icoList.querySelectorAll('li')
+            icon.addEventListener('click', (event) => {
+                const iconsOfList = icoList.querySelectorAll('li')
 
-                for (const ico of icosOfList) {
+                for (const ico of iconsOfList) {
                     ico.classList.remove('selected')
                 }
 
-                document.getElementById('ctrl_' + fieldname).value = ico.dataset.value
-                ico.classList.add('selected')
+                document.getElementById('ctrl_' + fieldname).value = icon.dataset.value
+                icon.classList.add('selected')
             })
         }
     }
@@ -71,24 +71,25 @@ class IconPickerWidget {
      * @private
      */
     _initializeSearch(icoList, fieldname) {
-        const searchField   = document.getElementById('ctrl_' + fieldname)
-        const listElem      = icoList.querySelectorAll('ul')
+        const searchField = document.getElementById('ctrl_' + fieldname)
 
         if (undefined !== searchField) {
             searchField.addEventListener('input', (event) => {
-                const icosOfList = icoList.querySelectorAll('li')
+                const iconsOfList = icoList.querySelectorAll('li')
                 const searchTerm = searchField.value.toLowerCase()
 
                 if (searchTerm.length > 0) {
 
-                    for (const ico of icosOfList) {
-                        if (false === ico.dataset.value.toLowerCase().includes(searchTerm)) {
-                            ico.classList.add('hidden')
+                    for (const icon of iconsOfList) {
+                        icon.classList.remove('selected')
+
+                        if (false === icon.dataset.value.toLowerCase().includes(searchTerm)) {
+                            icon.classList.add('hidden')
                         } else {
-                            ico.classList.remove('hidden')
+                            icon.classList.remove('hidden')
                         }
 
-                        this._scroll(ico)
+                        this._scroll(icon)
                     }
                 }
             })
