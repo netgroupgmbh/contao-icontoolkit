@@ -86,7 +86,7 @@ MyClass {
 ```
 
 
-## Fort Awesome
+## Font Awesome
 
 Die aktuelle Version von Font Awesome kann auf folgender Seite bezogen werden: https://fontawesome.com/download
 
