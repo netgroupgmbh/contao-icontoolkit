@@ -37,30 +37,21 @@ class IconPickerWidget extends TextField
 
 
     /**
-     * Erstellt die Optionen aus den JSON Daten.
+     * @return string
      *
-     * @return array
-     */
-    public function getOptions(): array
-    {
-        $container                  = System::getContainer();
-        $icoHelper                  = $container->get(IconHelper::class);
-        $iconInfos                  = $icoHelper?->parseIconList() ?: [];
-
-        return $icoHelper?->getOptions($iconInfos) ?: [];
-    }
-
-
-    /**
-     * {@inheritDoc}
+     * @throws \Doctrine\DBAL\Exception
+     * @throws \JsonException
      */
     public function generate(): string
     {
-        $ah = System::getContainer()->get(AssetHelper::class);
+        $icoHelper  = System::getContainer()->get(IconHelper::class);
+        $iconInfos  = $icoHelper?->parseIconList() ?: [];
+        $ah         = System::getContainer()->get(AssetHelper::class);
         $ah?->includeJavaScript();
         $ah?->incldueCss();
         $ah?->includeBeCss();
 
+        $iconStyle                  = $this->gerIconStyle($this->varValue);
         $tplFactory                 = System::getContainer()->get(TemplateFactory::class);
         $template                   = $tplFactory?->createBeackendTemplate(self::PICKER_TPL);
         $template->strName          = $this->strName;
@@ -69,9 +60,28 @@ class IconPickerWidget extends TextField
         $template->varValue         = self::specialcharsValue($this->varValue);
         $template->strAttributes    = $this->getAttributes();
         $template->wizard           = $this->wizard;
-        $template->options          = $this->getOptions();
+        $template->options          = $icoHelper?->getOptions($iconInfos, $iconStyle, '') ?: [];
+        $template->iconStyle        = $iconStyle;
+        $template->iconStyles       = $icoHelper?->getStyles($iconInfos) ?: [];
 
         return $template->parse();
+    }
+
+
+    /**
+     * Gibt den Style des gewählen Icons zurück.
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    public function gerIconStyle(string $value): string
+    {
+        $iconStyle = self::specialcharsValue($value);
+        $iconStyle = \str_replace('fa-', '', $iconStyle);
+        $iconStyle = \explode(' ', $iconStyle);
+
+        return $iconStyle[0] ?? '';
     }
 
 
@@ -84,7 +94,10 @@ class IconPickerWidget extends TextField
      */
     protected function validator($varInput): mixed
     {
-        $options    = $this->getOptions();
+        $iconStyle  = $this->gerIconStyle($varInput);
+        $icoHelper  = System::getContainer()->get(IconHelper::class);
+        $iconInfos  = $icoHelper?->parseIconList() ?: [];
+        $options    = $icoHelper?->getOptions($iconInfos, $iconStyle);
         $values     = \array_keys($options);
         $err        = $GLOBALS['TL_LANG']['MSC']['ico_error'] ?? 'Bitte wählen Sie ein gültiges Icon aus.';
 

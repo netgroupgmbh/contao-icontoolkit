@@ -3,9 +3,18 @@ services:
         autowire: true
         autoconfigure: true
 
+    # Controller
+    NetGroup\IconToolkit\Classes\Controller\FetchIconListController: ~
+
+    NetGroup\IconToolkit\Classes\Controller\FetchIconStylesController: ~
+
     # Helper
     NetGroup\IconToolkit\Classes\Services\Helper\AssetHelper:
         public: true
+
+    NetGroup\IconToolkit\Classes\Services\Helper\ConfigHelper: ~
+
+    NetGroup\IconToolkit\Classes\Services\Helper\DatabaseHelper: ~
 
     NetGroup\IconToolkit\Classes\Services\Helper\FileAbstractionHelper: ~
 
@@ -13,7 +22,8 @@ services:
         public: true
         arguments:
             $projectDir: '%kernel.project_dir%'
-            $iconsJsonPath: '/public/bundles/netgroupicontoolkit/fontawesome-free-7.1.0-web/metadata/icons.json'
 
-    Esit\IconToolkit\Classes\Services\Helper\ScopeHelper:
+    NetGroup\IconToolkit\Classes\Services\Helper\IconPackConfig: ~
+
+    NetGroup\IconToolkit\Classes\Services\Helper\ScopeHelper:
         public: true

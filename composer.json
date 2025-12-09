@@ -11,8 +11,11 @@
             "role": "Developer"
         }
     ],
+    "homepage": "https://www.netgroup.de/icontoolkit.html",
     "support": {
-        "email": "info@netgroup.de"
+        "email": "info@netgroup.de",
+        "issues": "https://github.com/netgroupgmbh/contao-icontoolkit/issues",
+        "source": "https://github.com/netgroupgmbh/contao-icontoolkit"
     },
     "require": {
         "php": "^8.2",

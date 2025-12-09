@@ -14,9 +14,12 @@ declare(strict_types=1);
 
 namespace NetGroup\IconToolkit\Tests\Services\Helper;
 
+use Doctrine\DBAL\Exception;
 use NetGroup\IconToolkit\Classes\Services\Factories\FinderFactory;
 use NetGroup\IconToolkit\Classes\Services\Helper\FileAbstractionHelper;
 use NetGroup\IconToolkit\Classes\Services\Helper\IconHelper;
+use NetGroup\IconToolkit\Classes\Services\Helper\IconPackConfig;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -34,6 +37,12 @@ class IconHelperTest extends TestCase
      * @var FileAbstractionHelper
      */
     private $file;
+
+
+    /**
+     * @var (IconPackConfig&MockObject)|MockObject
+     */
+    private $iconConfig;
 
 
 
@@ -61,11 +70,15 @@ class IconHelperTest extends TestCase
                                        ->disableOriginalConstructor()
                                        ->getMock();
 
+        $this->iconConfig       = $this->getMockBuilder(IconPackConfig::class)
+                                       ->disableOriginalConstructor()
+                                       ->getMock();
+
         $this->filesystem       = $this->getMockBuilder(Filesystem::class)
                                        ->getMock();
 
 
-        $this->iconHelper       = new IconHelper('/project', '/icons.json', $this->finderFactory, $this->file);
+        $this->iconHelper       = new IconHelper('/project', $this->finderFactory, $this->file, $this->iconConfig);
     }
 
 
@@ -73,11 +86,12 @@ class IconHelperTest extends TestCase
      * @return void
      *
      * @throws \JsonException
+     * @throws Exception
      */
     public function testParseIconListReturnsValidData(): void
     {
         // Anordnen
-        $path             = '/project/icons.json';
+        $path             = '/public/icons.json';
         $jsonContent      = '{"home":{"label":"Home","free":["solid"]}}';
         $expected         = [
             'home' => [
@@ -86,15 +100,19 @@ class IconHelperTest extends TestCase
             ]
         ];
 
+        $this->iconConfig->expects($this->once())
+                         ->method('getIconPackJson')
+                         ->willReturn($path);
+
         $this->finderFactory->method('createFileSystem')
                             ->willReturn($this->filesystem);
 
         $this->filesystem->method('exists')
-                         ->with($path)
+                         ->with("/project$path")
                          ->willReturn(true);
 
         $this->file->method('getContents')
-                   ->with($path)
+                   ->with("/project$path")
                    ->willReturn($jsonContent);
 
         $rtn = $this->iconHelper->parseIconList();
@@ -107,17 +125,22 @@ class IconHelperTest extends TestCase
      * @return void
      *
      * @throws \JsonException
+     * @throws Exception
      */
     public function testParseIconListReturnsEmptyWhenFileNotFound(): void
     {
         // Anordnen
-        $path = '/project/icons.json';
+        $path = '/public/icons.json';
+
+        $this->iconConfig->expects($this->once())
+                         ->method('getIconPackJson')
+                         ->willReturn($path);
 
         $this->finderFactory->method('createFileSystem')
                             ->willReturn($this->filesystem);
 
         $this->filesystem->method('exists')
-                         ->with($path)
+                         ->with("/project$path")
                          ->willReturn(false);
 
         $rtn = $this->iconHelper->parseIconList();
@@ -130,6 +153,7 @@ class IconHelperTest extends TestCase
      * @return void
      *
      * @throws \JsonException
+     * @throws Exception
      */
     public function testParseIconListReturnsEmptyWhenContentIsEmpty(): void
     {
@@ -137,15 +161,19 @@ class IconHelperTest extends TestCase
         $path   = '/project/icons.json';
         $empty  = '';
 
+        $this->iconConfig->expects($this->once())
+                         ->method('getIconPackJson')
+                         ->willReturn($path);
+
         $this->finderFactory->method('createFileSystem')
                             ->willReturn($this->filesystem);
 
         $this->filesystem->method('exists')
-                         ->with($path)
+                         ->with("/project$path")
                          ->willReturn(true);
 
         $this->file->method('getContents')
-                   ->with($path)
+                   ->with("/project$path")
                    ->willReturn($empty);
 
         $rtn = $this->iconHelper->parseIconList();
@@ -159,17 +187,16 @@ class IconHelperTest extends TestCase
         // Anordnen
         $iconInfos = [
             'home' => [
-                'label' => 'Home Icon',
-                'free'  => ['solid', 'regular']
+                'label'     => 'Home Icon',
+                'styles'    => ['solid', 'regular']
             ]
         ];
 
         $expected = [
-            'fa-solid fa-home'   => 'fa-solid fa-home',
             'fa-regular fa-home' => 'fa-regular fa-home'
         ];
 
-        $rtn = $this->iconHelper->getOptions($iconInfos);
+        $rtn = $this->iconHelper->getOptions($iconInfos, 'regular');
 
         $this->assertEquals($expected, $rtn);
     }
@@ -184,13 +211,48 @@ class IconHelperTest extends TestCase
         // Anordnen
         $invalidIconInfos = [
             'broken' => [
-                'label' => '',
-                'free'  => []
+                'label'     => '',
+                'styles'    => []
             ]
         ];
 
         $rtn = $this->iconHelper->getOptions($invalidIconInfos);
 
         $this->assertEquals([], $rtn);
+    }
+
+
+    public function testGetStyleReturnEmptyArrayIfNoIconInfosFound(): void
+    {
+        $iconInfos  = [];
+
+        $this->assertEmpty($this->iconHelper->getStyles($iconInfos));
+    }
+
+
+    public function testGetStyleReturnEmptyArrayIfNoStylesFound(): void
+    {
+        $iconInfos  = [
+            'home' => [
+                'label'     => 'Home Icon',
+                'styles'    => []
+            ]
+        ];
+
+        $this->assertEmpty($this->iconHelper->getStyles($iconInfos));
+    }
+
+
+    public function testGetStyleReturnStyleIfFound(): void
+    {
+        $expected   = ['solid', 'regular'];
+        $iconInfos  = [
+            'home' => [
+                'label'     => 'Home Icon',
+                'styles'    => ['solid', 'regular']
+            ]
+        ];
+
+        $this->assertSame($expected, $this->iconHelper->getStyles($iconInfos));
     }
 }

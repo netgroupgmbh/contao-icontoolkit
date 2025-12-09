@@ -9,120 +9,56 @@
  *
  * @copyright   NetGroup GmbH 2025
  */
-
-class IconPickerWidget {
+class IconPcikerWidget {
 
 
     /**
-     * Initialisiert die Widgets
-     * @param selector
+     * Liest die Icons aus und speichert die Auswahl
+     * @private
      */
-    initialize(selector) {
-        const iconLists = document.querySelectorAll(selector)
+    initialize(fieldname, listElem) {
+        const helper            = new Helper()
+        const selectionHandler  = new SelectionHandler(helper, fieldname)
+        const searchHandler     = new SearchHandler(selectionHandler, helper)
+        const styleHandler      = new StyleHandler(selectionHandler, searchHandler, helper)
 
-        for (const icoList of iconLists) {
-            const fieldname = icoList.dataset.fieldname
+        const iconsOfList       = listElem.querySelectorAll('li')
+        let icons               = []
+        let selected            = ''
 
-            if (undefined !== fieldname) {
-                this._initializeList(icoList, fieldname)
-                this._initializeSearch(icoList, fieldname)
+        for (const icoElem of iconsOfList) {
+            icons.push(icoElem.dataset.value)
+
+            if (icoElem.classList.contains('selected')) {
+                selected = icoElem.dataset.value
             }
         }
-    }
 
+        selectionHandler.initializeSelection(icons, selected)
+        searchHandler.initializeSearch(fieldname, icons)
+        styleHandler.initializeStyle(fieldname, icons)
 
-    /**
-     * Initialisiert die Liste.
-     *
-     * @param icoList
-     * @param fieldname
-     * @private
-     */
-    _initializeList(icoList, fieldname) {
-        const iconsOfList = icoList.querySelectorAll('li')
-
-        for (const icon of iconsOfList) {
-            if (icon.classList.contains('selected')) {
-                icon.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                })
-            }
-
-            icon.addEventListener('click', (event) => {
-                const iconsOfList = icoList.querySelectorAll('li')
-
-                for (const ico of iconsOfList) {
-                    ico.classList.remove('selected')
-                }
-
-                document.getElementById('ctrl_' + fieldname).value = icon.dataset.value
-                icon.classList.add('selected')
-            })
-        }
-    }
-
-
-    /**
-     * Initialisiert die Suche
-     *
-     * @param icoList
-     * @param fieldname
-     * @private
-     */
-    _initializeSearch(icoList, fieldname) {
-        const searchField = document.getElementById('ctrl_' + fieldname)
-
-        if (undefined !== searchField) {
-            searchField.addEventListener('input', (event) => {
-                const iconsOfList = icoList.querySelectorAll('li')
-                const searchTerm = searchField.value.toLowerCase()
-
-                if (searchTerm.length > 0) {
-
-                    for (const icon of iconsOfList) {
-                        icon.classList.remove('selected')
-
-                        if (false === icon.dataset.value.toLowerCase().includes(searchTerm)) {
-                            icon.classList.add('hidden')
-                        } else {
-                            icon.classList.remove('hidden')
-                        }
-
-                        this._scroll(icon)
-                    }
-                }
-            })
-        }
-    }
-
-
-    /**
-     * Scrollt zum ausgewählen Element oder nach oben in der Liste.
-     *
-     * @param ico
-     * @private
-     */
-    _scroll(ico) {
-        if (ico.classList.contains('selected')) {
-            ico.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-            })
-        } else {
-            ico.parentNode.scrollTo({
-                behavior: 'smooth',
-                top: 0
-            })
+        if (selected) {
+            const icoElem = helper.getElem(selected)
+            helper.scrollToIcon(icoElem)
         }
     }
 }
+
 
 
 /**
  * Widgets initialisieren
  */
 document.addEventListener('DOMContentLoaded', function(event) {
-    const ipw = new IconPickerWidget()
-    ipw.initialize('.ng_iconpicker_list')
+    const iconLists = document.querySelectorAll('.ng_iconpicker_list')
+
+    for (const icoList of iconLists) {
+        const fieldname = icoList.dataset.fieldname
+
+        if (undefined !== fieldname) {
+            const ipw = new IconPcikerWidget()
+            ipw.initialize(fieldname, icoList)
+        }
+    }
 })

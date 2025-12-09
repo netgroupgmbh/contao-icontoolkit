@@ -7,12 +7,26 @@ Bei dieser Software handelt es sich um eine Erweiterung für das Open Source CMS
 von [Font Awesome](https://fontawesome.com/). Unter anderem stellt sie ein IconPicker für das Backend und ein Modul zur
 Einbindung der Assets für das Frontend zur Verfügung.
 
-Font Awesome 7.1.0 mit ausgeliefert.
+Font Awesome 7.1.0 wird mit ausgeliefert.
 
 
 ## Autor
 
 __NetGroup GmbH:__ Patrick Froch <info@netgroup.de>
+
+
+## Support
+
+NetGroup Gesellschaft für Informationstechnologien in Deutschland mbH<br>
+Kaiserstraße 67<br>
+44135 Dortmund
+
+Kontakt:<br>
+Telefon: +49 231 557509-0<br>
+Telefax: +49 231 557509-99<br>
+E-Mail: info@netgroup.de
+
+Internet: https://www.netgroup.de/icontoolkit.html
 
 
 ## Voraussetzungen
@@ -36,7 +50,7 @@ composer require netgroup/icontoolkit
 
 ### Backend Widget
 
-Das Backend Widget kann im Backend für die Auswahl eines Icons verwendet werden.
+Das Backend Widget kann für die Auswahl eines Icons verwendet werden.
 
 ```php
 $GLOBALS['TL_DCA'][$table]['palettes']['text'] .= ';{icon_legend},icotest;';
@@ -91,6 +105,12 @@ MyClass {
 Die aktuelle Version von Font Awesome kann auf folgender Seite bezogen werden: https://fontawesome.com/download
 
 Aus dem Archiv werden die Ordner `css` und `webfonts`, sowie die Daten `metadata/icons.json` benötigt.
+
+
+## Alternative Icon Packs
+
+In den Einstellungen an die CSS-Datei eines alternativen Iconpacks ausgewählt werden. Zusätzlich muss die JSON-Datei
+mit der Definition der Icons ausgewählt werden. _(Diese muss dem Aufbau der Datei `metadata/icons.json` von Font Awesome entsprechen)_
 
 
 ## Mitwirken

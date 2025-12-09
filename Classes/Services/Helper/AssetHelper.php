@@ -18,19 +18,26 @@ class AssetHelper
 {
 
 
-    public const CSS = [
-        '/bundles/netgroupicontoolkit/fontawesome-free-7.1.0-web/css/all.min.css'
-    ];
-
-
     public const BE_CSS = [
         '/bundles/netgroupicontoolkit/custom/icon_picker_widget.css'
     ];
 
 
     public const JS = [
+        '/bundles/netgroupicontoolkit/custom/Helper.js',
+        '/bundles/netgroupicontoolkit/custom/SelectionHandler.js',
+        '/bundles/netgroupicontoolkit/custom/SearchHandler.js',
+        '/bundles/netgroupicontoolkit/custom/StyleHandler.js',
         '/bundles/netgroupicontoolkit/custom/icon_picker_widget.js'
     ];
+
+
+    /**
+     * @param IconPackConfig $iconConfig
+     */
+    public function __construct(private readonly IconPackConfig $iconConfig)
+    {
+    }
 
 
     /**
@@ -40,10 +47,10 @@ class AssetHelper
      */
     public function incldueCss(): void
     {
-        foreach (self::CSS as $css) {
-            if (empty($GLOBALS['TL_CSS']) || !\in_array($css, $GLOBALS['TL_CSS'], true)) {
-                $GLOBALS['TL_CSS'][] = $css;
-            }
+        $css = $this->iconConfig->getIconPackCss();
+
+        if (empty($GLOBALS['TL_CSS']) || !\in_array($css, $GLOBALS['TL_CSS'], true)) {
+            $GLOBALS['TL_CSS'][] = $css;
         }
     }
 

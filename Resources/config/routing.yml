@@ -1,0 +1,4 @@
+# config/routes.yaml
+netgroup.icontoolkit.controller:
+    resource: ../../Classes/Controller
+    type: attribute

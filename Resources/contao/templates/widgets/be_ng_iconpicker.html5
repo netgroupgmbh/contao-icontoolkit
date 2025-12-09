@@ -1,11 +1,21 @@
+<select name="ng_icon_styles_<?= $this->strId; ?>" id="ng_icon_styles_<?= $this->strId; ?>" class="tl_select">
+    <option value="">-</option>
+    <?php if (!empty($this->iconStyles)): ?>
+        <?php foreach ($this->iconStyles as $style) : ?>
+            <option value="<?= $style; ?>"<?= $style === $this->iconStyle ? ' selected' : ''; ?>><?= $style; ?></option>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</select>
+
 <input type="text" name="<?= $this->strName; ?>" id="ctrl_<?= $this->strId; ?>" class="tl_text<?= $this->strClass; ?> ng_iconpicker" value="<?= $this->varValue; ?>"<?= $this->strAttributes; ?> data-action="focus->contao--scroll-offset#store" data-contao--scroll-offset-target="autoFocus" data-fieldname="<?= $this->strName; ?>"><?= $this->wizard; ?>
-<div class="ng_iconpicker_list <?= $this->strName; ?>" data-fieldname="<?= $this->strName; ?>">
+
+<div class="ng_iconpicker_list <?= $this->strName; ?>" id="ng_iconpicker_list_<?= $this->strName; ?>" data-fieldname="<?= $this->strName; ?>">
     <?php if(!empty($this->options)): ?>
         <ul>
             <?php foreach ($this->options as $value => $label): ?>
                 <?php $selected = $this->varValue === $value ? ' class="selected"' : ''; ?>
 
-                <li data-value="<?= $value; ?>"<?= $selected; ?>>
+                <li id="<?= \str_replace(' ', '_', $value); ?>" data-value="<?= $value; ?>"<?= $selected; ?>>
                     <i class="<?= $value; ?>"></i>
                     <span class="label">
                         <?= $label; ?>
