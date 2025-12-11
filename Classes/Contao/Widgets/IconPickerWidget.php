@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace NetGroup\IconToolkit\Classes\Contao\Widgets;
 
+use Contao\StringUtil;
 use Contao\System;
 use Contao\TextField;
 use NetGroup\IconToolkit\Classes\Services\Factories\TemplateFactory;
@@ -47,17 +48,18 @@ class IconPickerWidget extends TextField
         $icoHelper  = System::getContainer()->get(IconHelper::class);
         $iconInfos  = $icoHelper?->parseIconList() ?: [];
         $ah         = System::getContainer()->get(AssetHelper::class);
+
         $ah?->includeJavaScript();
         $ah?->incldueCss();
         $ah?->includeBeCss();
 
-        $iconStyle                  = $this->gerIconStyle($this->varValue);
+        $iconStyle                  = $this->getIconStyle($this->varValue);
         $tplFactory                 = System::getContainer()->get(TemplateFactory::class);
         $template                   = $tplFactory?->createBeackendTemplate(self::PICKER_TPL);
         $template->strName          = $this->strName;
         $template->strId            = $this->strId;
         $template->strClass         = $this->strClass ? ' ' . $this->strClass : '';
-        $template->varValue         = self::specialcharsValue($this->varValue);
+        $template->varValue         = StringUtil::specialchars($this->varValue);
         $template->strAttributes    = $this->getAttributes();
         $template->wizard           = $this->wizard;
         $template->options          = $icoHelper?->getOptions($iconInfos, $iconStyle, '') ?: [];
@@ -75,13 +77,13 @@ class IconPickerWidget extends TextField
      *
      * @return string
      */
-    public function gerIconStyle(string $value): string
+    public function getIconStyle(string $value): string
     {
-        $iconStyle = self::specialcharsValue($value);
+        $iconStyle = StringUtil::specialchars($value);
         $iconStyle = \str_replace('fa-', '', $iconStyle);
         $iconStyle = \explode(' ', $iconStyle);
 
-        return $iconStyle[0] ?? '';
+        return !empty($iconStyle[0]) ? $iconStyle[0] : 'solid';
     }
 
 
@@ -94,7 +96,7 @@ class IconPickerWidget extends TextField
      */
     protected function validator($varInput): mixed
     {
-        $iconStyle  = $this->gerIconStyle($varInput);
+        $iconStyle  = $this->getIconStyle($varInput);
         $icoHelper  = System::getContainer()->get(IconHelper::class);
         $iconInfos  = $icoHelper?->parseIconList() ?: [];
         $options    = $icoHelper?->getOptions($iconInfos, $iconStyle);

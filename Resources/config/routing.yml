@@ -1,4 +1,17 @@
 # config/routes.yaml
-netgroup.icontoolkit.controller:
-    resource: ../../Classes/Controller
-    type: attribute
+
+NetGroup\IconToolkit\Classes\Controller\FetchIconListController:
+    path: 'contao/ng-fetch-icon-list/{_style}/{_search}'
+    methods: ['GET']
+    defaults:
+        _controller: 'NetGroup\IconToolkit\Classes\Controller\FetchIconListController::__invoke'
+        _scope: 'backend'
+        _style: 'solid'
+        _search: ''
+
+NetGroup\IconToolkit\Classes\Controller\FetchIconStylesController:
+    path: 'contao/ng-fetch-icon-styles'
+    methods: ['GET']
+    defaults:
+        _controller: 'NetGroup\IconToolkit\Classes\Controller\FetchIconStylesController::__invoke'
+        _scope: 'backend'

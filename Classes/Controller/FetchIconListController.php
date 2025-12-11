@@ -18,9 +18,7 @@ use Contao\CoreBundle\Controller\AbstractBackendController;
 use Doctrine\DBAL\Exception;
 use NetGroup\IconToolkit\Classes\Services\Helper\IconHelper;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('%contao.backend.route_prefix%/ng-fetch-icon-list/{style}/{search}', name: self::class, defaults: ['_scope' => 'backend'])]
 class FetchIconListController extends AbstractBackendController
 {
 

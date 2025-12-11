@@ -4,9 +4,13 @@ services:
         autoconfigure: true
 
     # Controller
-    NetGroup\IconToolkit\Classes\Controller\FetchIconListController: ~
+    NetGroup\IconToolkit\Classes\Controller\FetchIconListController:
+        tags:
+            - 'controller.service_arguments'
 
-    NetGroup\IconToolkit\Classes\Controller\FetchIconStylesController: ~
+    NetGroup\IconToolkit\Classes\Controller\FetchIconStylesController:
+        tags:
+            - 'controller.service_arguments'
 
     # Helper
     NetGroup\IconToolkit\Classes\Services\Helper\AssetHelper:
