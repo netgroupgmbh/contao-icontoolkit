@@ -129,6 +129,9 @@ Tests können mit folgendem Skript im Wurzelverzeichnis der Erweiterung ausgefü
 ./build/runtests.sh
 ```
 
+_(Dies setzt voraus, dass die Erweiterung unter `CONTAO_ROOT/src/NetGroup/IconToolkit` installiert ist. Ist dies nicht
+der Fall, müssen die Testtools einzeln aufgerufen werden. Die Kommandos stehen in der oben genannten Datei.)_
+
 
 ## Getestete Versionen
 
