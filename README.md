@@ -7,7 +7,8 @@ Bei dieser Software handelt es sich um eine Erweiterung für das Open Source CMS
 von [Font Awesome](https://fontawesome.com/). Unter anderem stellt sie ein IconPicker für das Backend und ein Modul zur
 Einbindung der Assets für das Frontend zur Verfügung.
 
-Font Awesome 7.1.0 wird mit ausgeliefert.
+Font Awesome 7.1.0 wird mit ausgeliefert und automatisch eingebunden, sofern keine eigenen Icon-Packs eingebunden wurden -
+siehe "Alternative Icon Packs".
 
 
 ## Autor
@@ -109,8 +110,8 @@ Aus dem Archiv werden die Ordner `css` und `webfonts`, sowie die Daten `metadata
 
 ## Alternative Icon Packs
 
-In den Einstellungen an die CSS-Datei eines alternativen Iconpacks ausgewählt werden. Zusätzlich muss die JSON-Datei
-mit der Definition der Icons ausgewählt werden. _(Diese muss dem Aufbau der Datei `metadata/icons.json` von Font Awesome entsprechen)_
+In `System > Einstellungen` kann die CSS-Datei eines alternativen Iconpacks ausgewählt werden. Zusätzlich muss die JSON-Datei
+mit der passenden Definition der Icons ausgewählt werden. _(Diese muss dem Aufbau der Datei `metadata/icons.json` von Font Awesome entsprechen)_
 
 
 ## Mitwirken
