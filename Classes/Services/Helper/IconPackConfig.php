@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace NetGroup\IconToolkit\Classes\Services\Helper;
 
+use Contao\StringUtil;
+use Contao\System;
+
 class IconPackConfig
 {
 
@@ -32,16 +35,14 @@ class IconPackConfig
 
     /**
      * Pfad zur CSS-Datei der freien Version von Font Awesome
-     * (exkl. public/)
      */
     public const DEFAULT_ICON_PACK_CSS = '/bundles/netgroupicontoolkit/fontawesome-free-7.1.0-web/css/all.min.css';
 
 
     /**
      * Pfad zur JSON-Datei der freien Version von Font Awesome
-     * (inkl. public/)
      */
-    public const DEFAULT_ICON_PACK_JSON = '/public/bundles/netgroupicontoolkit/fontawesome-free-7.1.0-web/metadata/icons.json';
+    public const DEFAULT_ICON_PACK_JSON = '/bundles/netgroupicontoolkit/fontawesome-free-7.1.0-web/metadata/icons.json';
 
 
     /**
@@ -73,8 +74,9 @@ class IconPackConfig
      */
     public function getIconPackJson(): string
     {
-        $uuid = $this->configHelper->get(self::ICON_PACK_JSON);
+        $uuid   = $this->configHelper->get(self::ICON_PACK_JSON);
+        $webDir = StringUtil::stripRootDir(System::getContainer()->getParameter('contao.web_dir'));
 
-        return $this->db->loadPathByUuid($uuid) ?: self::DEFAULT_ICON_PACK_JSON;
+        return $this->db->loadPathByUuid($uuid) ?: '/' . $webDir . '/' . self::DEFAULT_ICON_PACK_JSON;
     }
 }
