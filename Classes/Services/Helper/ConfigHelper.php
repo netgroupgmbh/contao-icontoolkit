@@ -31,6 +31,16 @@ class ConfigHelper
      */
     public function get(string $name): string
     {
-        return (string) Config::get($name);
+        $value   = Config::get($name) ?: '';
+
+        if (true === \is_string($value)) {
+            return $value;
+        }
+
+        if (is_int($value) || is_float($value) || is_bool($value)) {
+            return (string) $value;
+        }
+
+        return '';
     }
 }

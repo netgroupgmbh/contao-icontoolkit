@@ -39,7 +39,7 @@ class IconHelper
     /**
      * Gibt die Informationen der Icons zurück
      *
-     * @return mixed[]
+     * @return array<string, array<string, mixed>>
      *
      * @throws \JsonException
      * @throws Exception
@@ -53,7 +53,7 @@ class IconHelper
             $contnet = $this->file->getContents($this->projectDir . $json);
 
             if (!empty($contnet)) {
-                return \json_decode($contnet, true, 512, JSON_THROW_ON_ERROR) ?: [];
+                return \json_decode($contnet, true, 512, JSON_THROW_ON_ERROR) ?: []; // @phpstan-ignore return.type
             }
         }
 
@@ -64,11 +64,11 @@ class IconHelper
     /**
      * Gibt die Icons als Array für die Optionen zurück.
      *
-     * @param mixed[] $iconInfos
-     * @param string  $style
-     * @param string  $search
+     * @param array<string, array<string, mixed>> $iconInfos
+     * @param string                              $style
+     * @param string                              $search
      *
-     * @return mixed[]
+     * @return array<string, string>
      */
     public function getOptions(array $iconInfos, string $style = 'solid', string $search = ''): array
     {
@@ -76,7 +76,7 @@ class IconHelper
 
         if (!empty($iconInfos)) {
             foreach ($iconInfos as $name => $ico) {
-                if (!empty($ico['styles']) && true === \in_array($style, $ico['styles'], true)) {
+                if (!empty($ico['styles']) && \is_array($ico['styles']) && true === \in_array($style, $ico['styles'], true)) {
                     if (empty($search) || \str_contains((string) $name, $search)) {
                         $options["fa-$style fa-$name"] = "fa-$style fa-$name";
                     }
@@ -91,9 +91,9 @@ class IconHelper
     /**
      * Gibt die Styles der Icons zurück.
      *
-     * @param mixed[] $iconInfos
+     * @param array<string, array<string, mixed>> $iconInfos
      *
-     * @return mixed[]
+     * @return string[]
      */
     public function getStyles(array $iconInfos): array
     {
@@ -101,8 +101,12 @@ class IconHelper
 
         if (!empty($iconInfos)) {
             foreach ($iconInfos as $ico) {
-                if (!empty($ico['styles'])) {
+                if (!empty($ico['styles']) && \is_array($ico['styles'])) {
                     foreach ($ico['styles'] as $style) {
+                        if (!\is_string($style)) {
+                            continue;
+                        }
+
                         if (false === \in_array($style, $styles, true)) {
                             $styles[] = $style;
                         }

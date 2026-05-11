@@ -49,8 +49,8 @@ class AssetHelper
     {
         $css = $this->iconConfig->getIconPackCss();
 
-        if (empty($GLOBALS['TL_CSS']) || !\in_array($css, $GLOBALS['TL_CSS'], true)) {
-            $GLOBALS['TL_CSS'][] = $css;
+        if (empty($GLOBALS['TL_CSS']) || !\in_array($css, $GLOBALS['TL_CSS'], true)) { // @phpstan-ignore argument.type
+            $GLOBALS['TL_CSS'][] = $css; // @phpstan-ignore offsetAccess.nonOffsetAccessible
         }
     }
 
@@ -63,8 +63,10 @@ class AssetHelper
     public function includeBeCss(): void
     {
         foreach (self::BE_CSS as $css) {
-            if (empty($GLOBALS['TL_CSS']) || !\in_array($css, $GLOBALS['TL_CSS'], true)) {
-                $GLOBALS['TL_CSS'][] = $css;
+            if (empty($GLOBALS['TL_CSS'])
+                || !\in_array($css, $GLOBALS['TL_CSS'], true) // @phpstan-ignore argument.type
+            ) {
+                $GLOBALS['TL_CSS'][] = $css; // @phpstan-ignore offsetAccess.nonOffsetAccessible
             }
         }
     }
@@ -78,8 +80,10 @@ class AssetHelper
     public function includeJavaScript(): void
     {
         foreach (self::JS as $js) {
-            if (empty($GLOBALS['TL_JAVASCRIPT']) || !\in_array($js, $GLOBALS['TL_JAVASCRIPT'], true)) {
-                $GLOBALS['TL_JAVASCRIPT'][] = $js;
+            if (empty($GLOBALS['TL_JAVASCRIPT'])
+                || !\in_array($js, $GLOBALS['TL_JAVASCRIPT'], true) // @phpstan-ignore argument.type
+            ) {
+                $GLOBALS['TL_JAVASCRIPT'][] = $js; // @phpstan-ignore offsetAccess.nonOffsetAccessible
             }
         }
     }

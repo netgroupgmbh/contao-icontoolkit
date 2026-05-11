@@ -14,6 +14,8 @@
         <exclude>
             <directory>../../Classes/Contao/</directory>
             <file>../../Classes/Services/Factories/TemplateFactory.php</file>
+            <file>../../Classes/Services/Helper/ConfigHelper.php</file>
+            <file>../../Classes/Services/Helper/DatabaseHelper.php</file>
             <file>../../Classes/Services/Helper/FileAbstractionHelper.php</file>
         </exclude>
         <report>

@@ -17,11 +17,13 @@ namespace NetGroup\IconToolkit\Tests\Services\Helper;
 
 use Contao\CoreBundle\Routing\ScopeMatcher;
 use NetGroup\IconToolkit\Classes\Services\Helper\ScopeHelper;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+#[AllowMockObjectsWithoutExpectations]
 class ScopeHelperTest extends TestCase
 {
 

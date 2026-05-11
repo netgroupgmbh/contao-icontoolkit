@@ -2,10 +2,7 @@
 
 declare(strict_types=1);
 
-use Symplify\EasyCodingStandard\Config\ECSConfig;
-use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
-
-return function (ECSConfig $ecsConfig): void {
+return function (\Symplify\EasyCodingStandard\Config\ECSConfig $ecsConfig): void {
     $ecsConfig->paths([
         __DIR__ . '/../Classes',
         __DIR__ . '/../Tests'
@@ -20,6 +17,13 @@ return function (ECSConfig $ecsConfig): void {
     // @see \PhpCsFixer\RuleSet\Sets\PSR1Set
     $ecsConfig->rule(\PhpCsFixer\Fixer\Basic\EncodingFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\PhpTag\FullOpeningTagFixer::class);
+
+    // Zeilenlänge
+    $ecsConfig->ruleWithConfiguration(\PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff::class, [
+        'lineLimit'         => 120,
+        'absoluteLineLimit' => 140,
+        'ignoreComments'    => true,
+    ]);
 
     // @see \PhpCsFixer\RuleSet\Sets\PSR2Set
     $ecsConfig->rule(\PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer::class);
@@ -52,7 +56,6 @@ return function (ECSConfig $ecsConfig): void {
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer::class, ['elements' => ['method', 'property']]);
 
     // @see \PhpCsFixer\RuleSet\Sets\PSR12Set
-    // $ecsConfig->rule(\PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer::class); // Einrückung bei Zuweisung wird entfernt!
     $ecsConfig->rule(\PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Whitespace\BlankLineBetweenImportGroupsFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixer::class);
@@ -63,11 +66,8 @@ return function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(\PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Casing\LowercaseStaticReferenceFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Operator\NewWithBracesFixer::class);
-    // $ecsConfig->rule(\PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer::class); // Leerzeilen am Klassenanfang werden entfernt!
     $ecsConfig->rule(\PhpCsFixer\Fixer\Import\NoLeadingImportSlashFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Whitespace\NoWhitespaceInBlankLineFixer::class);
-    //// This rule is added with its default configuration in line 251
-    //// $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer::class, ['order' => ['use_trait']]);
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\Import\OrderedImportsFixer::class, ['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']);
     $ecsConfig->rule(\PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\CastNotation\ShortScalarCastFixer::class);
@@ -84,15 +84,11 @@ return function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(\PhpCsFixer\Fixer\Phpdoc\AlignMultilineCommentFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Alias\BacktickToShellExecFixer::class);
-    // $ecsConfig->rule(\PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer::class); // Entfent die Einrückung bei Zuweisungen!
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer::class, ['statements' => ['return']]);
     $ecsConfig->rule(\PhpCsFixer\Fixer\CastNotation\CastSpacesFixer::class);
-    //// This rule is added with its default configuration in line 224
-    //// $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer::class, ['elements' => ['method' => 'one']]);
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer::class, ['single_line' => true]);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Casing\ClassReferenceNameCasingFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\NamespaceNotation\CleanNamespaceFixer::class);
-    // $ecsConfig->rule(\PhpCsFixer\Fixer\Operator\ConcatSpaceFixer::class); // Entfernt Leerzeichen bei der Stringverkettung!
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\Basic\CurlyBracesPositionFixer::class, ['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]);
     $ecsConfig->rule(\PhpCsFixer\Fixer\LanguageConstruct\DeclareParenthesesFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer::class);
@@ -118,7 +114,6 @@ return function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(\PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer::class);
-    //$ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer::class, ['tokens' => ['attribute', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'square_brace_block', 'switch', 'throw', 'use']]); // Entfent Lerrzeilen nach Mehthoden und zeichen Parametern teilweise!
     $ecsConfig->rule(\PhpCsFixer\Fixer\NamespaceNotation\NoLeadingNamespaceWhitespaceFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\ArrayNotation\NoMultilineWhitespaceAroundDoubleArrowFixer::class);
@@ -126,7 +121,6 @@ return function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(\PhpCsFixer\Fixer\CastNotation\NoShortBoolCastFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Semicolon\NoSinglelineWhitespaceBeforeSemicolonsFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Whitespace\NoSpacesAroundOffsetFixer::class);
-    // $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer::class, ['remove_inheritdoc' => true]); // Entfernt Parameter aus Kommentaren, wenn sie einen Typhint haben!
     $ecsConfig->rule(\PhpCsFixer\Fixer\Basic\NoTrailingCommaInSinglelineFixer::class);
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\ControlStructure\NoUnneededControlParenthesesFixer::class, ['statements' => ['break', 'clone', 'continue', 'echo_print', 'others', 'return', 'switch_case', 'yield', 'yield_from']]);
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\ControlStructure\NoUnneededCurlyBracesFixer::class, ['namespaces' => true]);
@@ -156,7 +150,6 @@ return function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(\PhpCsFixer\Fixer\Phpdoc\PhpdocScalarFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Phpdoc\PhpdocSingleLineVarSpacingFixer::class);
-    // $ecsConfig->rule(\PhpCsFixer\Fixer\Phpdoc\PhpdocSummaryFixer::class); // Mach hinter allen Kommentaren einen Punkt!
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\Phpdoc\PhpdocTagTypeFixer::class, ['tags' => ['inheritdoc' => 'inline']]);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Phpdoc\PhpdocToCommentFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Phpdoc\PhpdocTrimFixer::class);
@@ -177,7 +170,6 @@ return function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(\PhpCsFixer\Fixer\Operator\StandardizeIncrementFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Operator\StandardizeNotEqualsFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\ControlStructure\SwitchContinueToBreakFixer::class);
-    // $ecsConfig->rule(\PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer::class); // Fügt am Ende eines Arrays (bei Multiline) ein abschließendes Komma ein!
     $ecsConfig->rule(\PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Whitespace\TypeDeclarationSpacesFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Whitespace\TypesSpacesFixer::class);
@@ -200,8 +192,6 @@ return function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(\PhpCsFixer\Fixer\Operator\LogicalOperatorsFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Alias\ModernizeStrposFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer::class);
-    // $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\ConstantNotation\NativeConstantInvocationFixer::class, ['strict' => false]); // Steht in Zeiel 244 nach einmal!
-    // $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer::class, ['include' => ['@compiler_optimized'], 'scope' => 'namespaced', 'strict' => true]);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Naming\NoHomoglyphNamesFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\ClassNotation\NoPhp4ConstructorFixer::class);
@@ -225,44 +215,31 @@ return function (ECSConfig $ecsConfig): void {
     $ecsConfig->rule(\PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer::class);
     $ecsConfig->rule(\Symplify\CodingStandard\Fixer\Strict\BlankLineAfterStrictTypesFixer::class);
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer::class, ['statements' => ['do', 'for', 'foreach', 'return', 'switch', 'throw', 'try', 'while']]);
-    // $ecsConfig->rule(\PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer::class); // Entfertn Lerrzeilen zwischen Eigenschaften und Methoden!
     $ecsConfig->rule(\PhpCsFixer\Fixer\LanguageConstruct\CombineConsecutiveIssetsFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\LanguageConstruct\CombineConsecutiveUnsetsFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer::class);
-    // $ecsConfig->rule(\SlevomatCodingStandard\Sniffs\TypeHints\DisallowArrayTypeHintSyntaxSniff::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\SlevomatCodingStandard\Sniffs\PHP\DisallowDirectMagicInvokeCallSniff::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->ruleWithConfiguration(\SlevomatCodingStandard\Sniffs\Whitespaces\DuplicateSpacesSniff::class, ['ignoreSpacesInAnnotation' => true]); // Unbekannt, nicht installiert!
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer::class, ['format' => 'short']);
     $ecsConfig->rule(\PhpCsFixer\Fixer\StringNotation\EscapeImplicitBackslashesFixer::class);
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer::class, ['annotations' => ['inheritdoc']]);
     $ecsConfig->rule(\PHP_CodeSniffer\Standards\Generic\Sniffs\VersionControl\GitMergeConflictSniff::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Whitespace\HeredocIndentationFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\StringNotation\HeredocToNowdocFixer::class);
-    // $ecsConfig->rule(\PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\LanguageConstructSpacingSniff::class); // Expected an existing class name
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\ListNotation\ListSyntaxFixer::class, ['syntax' => 'short']);
-    // $ecsConfig->rule(\PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer::class); // Setzt die Multiline-Einrückung falsch!
     $ecsConfig->rule(\PhpCsFixer\Fixer\Comment\MultilineCommentOpeningClosingFixer::class);
-    // $ecsConfig->ruleWithConfiguration(\PhpCsFixerCustomFixers\Fixer\MultilinePromotedPropertiesFixer::class, ['minimum_number_of_parameters' => 2]); // Unbekannt, nicht installiert!
-    // $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixer::class, ['strategy' => 'new_line_for_chained_calls']); // Setzt das Semikolon beim Multiline in eine eigene Zeile!
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\ConstantNotation\NativeConstantInvocationFixer::class, ['fix_built_in' => false, 'include' => ['DIRECTORY_SEPARATOR', 'PHP_SAPI', 'PHP_VERSION_ID'], 'scope' => 'namespaced']);
     $ecsConfig->rule(\PhpCsFixer\Fixer\ControlStructure\NoSuperfluousElseifFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\LanguageConstruct\NoUnsetOnPropertyFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer::class);
-    // $ecsConfig->rule(\PhpCsFixerCustomFixers\Fixer\NoUselessParenthesisFixer::class); // Unbekannt, nicht installiert!
     $ecsConfig->rule(\PhpCsFixer\Fixer\ReturnNotation\NoUselessReturnFixer::class);
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\FunctionNotation\NullableTypeDeclarationForDefaultNullValueFixer::class, ['use_nullable_type_declaration' => true]);
-    // $ecsConfig->rule(\SlevomatCodingStandard\Sniffs\TypeHints\NullTypeHintOnLastPositionSniff::class); // Unbekannt, nicht installiert!
     $ecsConfig->rule(\PhpCsFixer\Fixer\ClassNotation\OrderedClassElementsFixer::class);
     $ecsConfig->rule(\Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Phpdoc\PhpdocLineSpanFixer::class);
-    // $ecsConfig->rule(\PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer::class); // Entfernt return void aus den Kommentaren!
     $ecsConfig->rule(\PhpCsFixer\Fixer\Phpdoc\PhpdocOrderByValueFixer::class);
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer::class, ['groups' => [['template', 'mixin'], ['preserveGlobalState', 'runInSeparateProcess'], ['copyright', 'license'], ['Attributes', 'Attribute'], ['ORM\\*'], ['Assert\\*']]]);
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\Phpdoc\PhpdocToCommentFixer::class, ['ignored_tags' => ['todo', 'see']]);
-    // $ecsConfig->rule(\PhpCsFixerCustomFixers\Fixer\PhpdocTypesCommaSpacesFixer::class); // Unbekannt, nicht installiert!
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\Phpdoc\PhpdocTypesFixer::class, ['groups' => ['simple', 'meta']]);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Phpdoc\PhpdocVarAnnotationCorrectOrderFixer::class);
-    // $ecsConfig->rule(\PhpCsFixerCustomFixers\Fixer\PhpUnitAssertArgumentsOrderFixer::class); // Unbekannt, nicht installiert!
     $ecsConfig->rule(\PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertInternalTypeFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\PhpUnit\PhpUnitExpectationFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\PhpUnit\PhpUnitMockFixer::class);
@@ -272,43 +249,12 @@ return function (ECSConfig $ecsConfig): void {
     $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\Alias\RandomApiMigrationFixer::class, ['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]);
     $ecsConfig->rule(\PhpCsFixer\Fixer\FunctionNotation\RegularCallableCallFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer::class);
-    // $ecsConfig->ruleWithConfiguration(\SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff::class, ['searchAnnotations' => true, 'allowFullyQualifiedNameForCollidingClasses' => true, 'allowFullyQualifiedGlobalClasses' => true, 'allowFullyQualifiedGlobalFunctions' => true, 'allowFullyQualifiedGlobalConstants' => true, 'allowPartialUses' => false]); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\SlevomatCodingStandard\Sniffs\Operators\RequireCombinedAssignmentOperatorSniff::class); // Unbekannt, nicht installiert!
     $ecsConfig->rule(\PhpCsFixer\Fixer\ClassNotation\SelfStaticAccessorFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\FunctionNotation\StaticLambdaFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Strict\StrictComparisonFixer::class);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Strict\StrictParamFixer::class);
     $ecsConfig->ruleWithConfiguration(\PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\SuperfluousWhitespaceSniff::class, ['ignoreBlankLines' => false]);
     $ecsConfig->rule(\PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer::class);
-    // $ecsConfig->ruleWithConfiguration(\PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer::class, ['elements' => ['arrays', 'arguments', 'match', 'parameters'], 'after_heredoc' => true]); // Fügt am Ende eines Arrays (bei Multiline) ein abschließendes Komma ein! Steht auch noch einmal in Zeile 177!
-    // $ecsConfig->ruleWithConfiguration(\SlevomatCodingStandard\Sniffs\Classes\TraitUseSpacingSniff::class, ['linesCountAfterLastUse' => 1, 'linesCountAfterLastUseWhenLastInClass' => 0, 'linesCountBeforeFirstUse' => 0, 'linesCountBetweenUses' => 0]); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\SlevomatCodingStandard\Sniffs\Functions\UnusedInheritedVariablePassedToClosureSniff::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->ruleWithConfiguration(\SlevomatCodingStandard\Sniffs\Namespaces\UnusedUsesSniff::class, ['searchAnnotations' => true]); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff::class); // Unbekannt, nicht installiert!
     $ecsConfig->rule(\PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer::class);
-    // $ecsConfig->rule(\SlevomatCodingStandard\Sniffs\Namespaces\UselessAliasSniff::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\SlevomatCodingStandard\Sniffs\PHP\UselessParenthesesSniff::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\SlevomatCodingStandard\Sniffs\Variables\UselessVariableSniff::class); // Unbekannt, nicht installiert!
     $ecsConfig->rule(\PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer::class);
-
-    // Custom fixers
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Fixer\AssertEqualsFixer::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Fixer\CaseCommentIndentationFixer::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Fixer\ChainedMethodBlockFixer::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Sniffs\ContaoFrameworkClassAliasSniff::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Fixer\ExpectsWithCallbackFixer::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Fixer\FunctionCallWithMultilineArrayFixer::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Fixer\InlinePhpdocCommentFixer::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Fixer\IsArrayNotEmptyFixer::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Fixer\MockMethodChainingIndentationFixer::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Fixer\MultiLineIfIndentationFixer::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Fixer\MultiLineLambdaFunctionArgumentsFixer::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Fixer\NoExpectsThisAnyFixer::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Fixer\NoLineBreakBetweenMethodArgumentsFixer::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Fixer\SingleLineConfigureCommandFixer::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Sniffs\SetDefinitionCommandSniff::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Fixer\TypeHintOrderFixer::class); // Unbekannt, nicht installiert!
-    // $ecsConfig->rule(\Contao\EasyCodingStandard\Sniffs\UseSprintfInExceptionsSniff::class); // Unbekannt, nicht installiert!
-
 };

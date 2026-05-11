@@ -26,8 +26,6 @@ class DatabaseHelper
      * @param string $uuid
      *
      * @return string
-     *
-     * @codeCoverageIgnore
      */
     public function loadPathByUuid(string $uuid): string
     {

@@ -16,10 +16,12 @@ namespace NetGroup\IconToolkit\Tests\Controller;
 
 use NetGroup\IconToolkit\Classes\Controller\FetchIconStylesController;
 use NetGroup\IconToolkit\Classes\Services\Helper\IconHelper;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+#[AllowMockObjectsWithoutExpectations]
 class FetchIconStylesControllerTest extends TestCase
 {
 

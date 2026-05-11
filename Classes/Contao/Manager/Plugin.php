@@ -93,6 +93,12 @@ class Plugin implements BundlePluginInterface, ConfigPluginInterface, RoutingPlu
             return null;
         }
 
-        return $resolver->resolve($file)->load($file);
+        $loader = $resolver->resolve($file);
+
+        if (false !== $loader) {
+            return $loader->load($file);
+        }
+
+        return null;
     }
 }

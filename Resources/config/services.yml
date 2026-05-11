@@ -31,3 +31,6 @@ services:
 
     NetGroup\IconToolkit\Classes\Services\Helper\ScopeHelper:
         public: true
+
+    NetGroup\IconToolkit\Classes\Services\Helper\ValueHelper:
+        public: true

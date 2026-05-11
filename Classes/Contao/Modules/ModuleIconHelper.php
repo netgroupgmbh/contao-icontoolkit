@@ -43,21 +43,23 @@ class ModuleIconHelper extends Module
      */
     public function generate(): string
     {
+        /** @var ScopeHelper|null $sh */
         $sh = System::getContainer()->get(ScopeHelper::class);
 
         if (true === $sh?->isBackend()) {
-            // Backend-Ausgabe
+            $href                   = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
             $objTemplate            = new BackendTemplate('be_wildcard');
             $objTemplate->wildcard  = '### FRONTEND MODUL ###';
             $objTemplate->title     = $this->headline;
             $objTemplate->id        = $this->id;
             $objTemplate->link      = $this->name;
-            $objTemplate->href      = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->href      = $href;
 
             return $objTemplate->parse();
         }
 
         if (true === $sh?->isFrontend()) {
+            /** @var AssetHelper|null $ah */
             $ah = System::getContainer()->get(AssetHelper::class);
             $ah?->incldueCss();
         }

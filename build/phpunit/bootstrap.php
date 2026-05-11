@@ -16,8 +16,12 @@ if (!defined('__DIR__') || empty(__DIR__)) {
 
 $buildDir       = __DIR__ . '/..';
 $rootDir        = __DIR__ . '/../..';
-$namesapce      = 'NetGroup';
+$namesapce      = 'NetGroup/IconToolkit'; // Format: Vendor/Package
 $testCase       = __DIR__ . '/NetGroupTestCase.php';
+
+if ('<#NAMESPACE#>' === $namesapce) {
+    throw new \Exception('|===> Der Namespace ist in der Datei bootstrap.php nicht gesetzt! <===|');
+}
 
 if (substr_count(__DIR__, "/src/$namesapce/")) {
     $arrPaths = explode("/src/$namesapce/", __DIR__);

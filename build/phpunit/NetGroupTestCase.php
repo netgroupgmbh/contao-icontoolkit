@@ -23,6 +23,18 @@ class NetGroupTestCase extends ContaoTestCase
 
 
     /**
+     * @var ContaoKernel|null
+     */
+    private static ?ContaoKernel $sharedKernel = null;
+
+
+    /**
+     * @var ContainerInterface|null
+     */
+    private static ?ContainerInterface $sharedContainer = null;
+
+
+    /**
      * @var Container|null
      */
     protected ?ContainerInterface $container = null;
@@ -35,14 +47,32 @@ class NetGroupTestCase extends ContaoTestCase
 
 
     /**
-     * @param null   $name
-     * @param array  $data
-     * @param string $dataName
+     * Bootet den Kernel einmalig für alle Tests der Klasse.
      */
-    public function __construct($name = null, array $data = [], $dataName = '')
+    public static function setUpBeforeClass(): void
     {
-        parent::__construct($name, $data, $dataName);
-        $this->rootDir = \dirname(__DIR__, 5);
+        parent::setUpBeforeClass();
+
+        if (!self::$sharedKernel instanceof ContaoKernel) {
+            $rootDir = \dirname(__DIR__, 5);
+            self::$sharedKernel = new ContaoKernel('dev', true);
+            self::$sharedKernel::setProjectDir($rootDir);
+            self::$sharedKernel->boot();
+            self::$sharedContainer = self::$sharedKernel->getContainer();
+        }
+    }
+
+
+    /**
+     * Fährt den Kernel nach allen Tests der Klasse herunter.
+     */
+    public static function tearDownAfterClass(): void
+    {
+        self::$sharedKernel?->shutdown();
+        self::$sharedKernel = null;
+        self::$sharedContainer = null;
+
+        parent::tearDownAfterClass();
     }
 
 
@@ -51,6 +81,7 @@ class NetGroupTestCase extends ContaoTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
     }
 
 
@@ -59,6 +90,7 @@ class NetGroupTestCase extends ContaoTestCase
      */
     protected function tearDown(): void
     {
+        parent::tearDown();
     }
 
 
@@ -69,14 +101,8 @@ class NetGroupTestCase extends ContaoTestCase
      */
     protected function createContainer(): void
     {
-        if (!$this->container instanceof Container) {
-            $kernel = new ContaoKernel('dev', true);
-            $kernel::setIconToolkitDir($this->rootDir);
-            $kernel->boot();
-
-            /** @var Container $container */
-            $this->container = $kernel->getContainer();
-        }
+        $this->rootDir = \dirname(__DIR__, 5);
+        $this->container = self::$sharedContainer;
     }
 
 
@@ -113,6 +139,7 @@ class NetGroupTestCase extends ContaoTestCase
      */
     protected function getServiceFiles(array $files = []): array
     {
+        $this->rootDir = \dirname(__DIR__, 5);
         $parts      = \explode('/build/', __DIR__);
         $pattern    = '|[[:alnum:]]*.php|';
 
@@ -206,4 +233,3 @@ class NetGroupTestCase extends ContaoTestCase
         return $callbacks;
     }
 }
-

@@ -1,8 +1,8 @@
 parameters:
-    level: 8
+    level: 9
     bootstrapFiles:
         - ../../../../vendor/autoload.php
     paths:
         - ../Classes
-    excludePaths:
-        - ../Classes/Contao/*
+    ignoreErrors:
+        - '#^Access to an undefined property Contao\\BackendTemplate::*#'

@@ -16,9 +16,11 @@ namespace NetGroup\IconToolkit\Tests\Services\Helper;
 
 use NetGroup\IconToolkit\Classes\Services\Helper\AssetHelper;
 use NetGroup\IconToolkit\Classes\Services\Helper\IconPackConfig;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[AllowMockObjectsWithoutExpectations]
 class AssetHelperTest extends TestCase
 {
 

@@ -20,6 +20,7 @@ use Contao\TextField;
 use NetGroup\IconToolkit\Classes\Services\Factories\TemplateFactory;
 use NetGroup\IconToolkit\Classes\Services\Helper\AssetHelper;
 use NetGroup\IconToolkit\Classes\Services\Helper\IconHelper;
+use NetGroup\IconToolkit\Classes\Services\Helper\ValueHelper;
 
 class IconPickerWidget extends TextField
 {
@@ -45,28 +46,39 @@ class IconPickerWidget extends TextField
      */
     public function generate(): string
     {
-        $icoHelper  = System::getContainer()->get(IconHelper::class);
-        $iconInfos  = $icoHelper?->parseIconList() ?: [];
-        $ah         = System::getContainer()->get(AssetHelper::class);
+        /** @var IconHelper|null $icoHelper */
+        $icoHelper      = System::getContainer()->get(IconHelper::class);
+        /** @var AssetHelper|null $ah */
+        $ah             = System::getContainer()->get(AssetHelper::class);
+        /** @var TemplateFactory|null $tplFactory */
+        $tplFactory     = System::getContainer()->get(TemplateFactory::class);
+        /** @var ValueHelper|null $valueHelper */
+        $valueHelper    = System::getContainer()->get(ValueHelper::class);
+        $iconInfos      = $icoHelper?->parseIconList() ?: [];
 
         $ah?->includeJavaScript();
         $ah?->incldueCss();
         $ah?->includeBeCss();
 
-        $iconStyle                  = $this->getIconStyle($this->varValue);
-        $tplFactory                 = System::getContainer()->get(TemplateFactory::class);
-        $template                   = $tplFactory?->createBeackendTemplate(self::PICKER_TPL);
-        $template->strName          = $this->strName;
-        $template->strId            = $this->strId;
-        $template->strClass         = $this->strClass ? ' ' . $this->strClass : '';
-        $template->varValue         = StringUtil::specialchars($this->varValue);
-        $template->strAttributes    = $this->getAttributes();
-        $template->wizard           = $this->wizard;
-        $template->options          = $icoHelper?->getOptions($iconInfos, $iconStyle, '') ?: [];
-        $template->iconStyle        = $iconStyle;
-        $template->iconStyles       = $icoHelper?->getStyles($iconInfos) ?: [];
+        $value      = $valueHelper?->getStringValue($this->varValue) ?: '';
+        $iconStyle  = $this->getIconStyle($value);
+        $template   = $tplFactory?->createBeackendTemplate(self::PICKER_TPL);
 
-        return $template->parse();
+        if (null !== $template) {
+            $template->strName          = $this->strName;
+            $template->strId            = $this->strId;
+            $template->strClass         = $this->strClass ? ' ' . $this->strClass : '';
+            $template->varValue         = StringUtil::specialchars($value);
+            $template->strAttributes    = $this->getAttributes();
+            $template->wizard           = $this->wizard;
+            $template->options          = $icoHelper?->getOptions($iconInfos, $iconStyle, '') ?: [];
+            $template->iconStyle        = $iconStyle;
+            $template->iconStyles       = $icoHelper?->getStyles($iconInfos) ?: [];
+
+            return $template->parse();
+        }
+
+        return '';
     }
 
 
@@ -93,17 +105,29 @@ class IconPickerWidget extends TextField
      * @param $varInput
      *
      * @return mixed
+     *
+     * @throws \Doctrine\DBAL\Exception
+     * @throws \JsonException
      */
     protected function validator($varInput): mixed
     {
-        $iconStyle  = $this->getIconStyle($varInput);
-        $icoHelper  = System::getContainer()->get(IconHelper::class);
-        $iconInfos  = $icoHelper?->parseIconList() ?: [];
-        $options    = $icoHelper?->getOptions($iconInfos, $iconStyle);
-        $values     = \array_keys($options);
-        $err        = $GLOBALS['TL_LANG']['MSC']['ico_error'] ?? 'Bitte wählen Sie ein gültiges Icon aus.';
+        /** @var IconHelper|null $icoHelper */
+        $icoHelper      = System::getContainer()->get(IconHelper::class);
+        /** @var ValueHelper|null $valueHelper */
+        $valueHelper    = System::getContainer()->get(ValueHelper::class);
+        $value          = $valueHelper?->getStringValue($varInput) ?: '';
+        $iconStyle      = $this->getIconStyle($value);
+        $iconInfos      = $icoHelper?->parseIconList() ?: [];
+        $options        = $icoHelper?->getOptions($iconInfos, $iconStyle) ?: [];
+        $values         = \array_keys($options);
+        /** @var array{TL_LANG: array<string, mixed>} $GLOBALS */
+        $err            = $GLOBALS['TL_LANG']['MSC']['ico_error'] ?? ''; // @phpstan-ignore offsetAccess.nonOffsetAccessible
 
         if (false === \in_array($varInput, $values, true)) {
+            if (false === \is_string($err) || empty($err)) {
+                $err = 'Bitte wählen Sie ein gültiges Icon aus.';
+            }
+
             $this->addError($err);
         }
 
