@@ -25,7 +25,8 @@
         "phpunit/phpunit": "^9.4|^12.4",
         "phpstan/phpstan": "^2.1",
         "symplify/easy-coding-standard": "^12.6",
-        "contao/test-case": "^4.13|^5.0"
+        "contao/test-case": "^4.13|^5.0",
+        "roave/security-advisories": "dev-master"
     },
     "autoload": {
         "psr-4": {
