@@ -17,8 +17,8 @@ namespace NetGroup\IconToolkit\Classes\Contao\Modules;
 use Contao\BackendTemplate;
 use Contao\Module;
 use Contao\System;
-use Esit\Scopehelper\Classes\Services\Helper\ScopeHelper;
 use NetGroup\IconToolkit\Classes\Services\Helper\AssetHelper;
+use NetGroup\IconToolkit\Classes\Services\Helper\ScopeHelper;
 
 class ModuleIconHelper extends Module
 {
