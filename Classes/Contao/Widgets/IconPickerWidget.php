@@ -73,13 +73,13 @@ class IconPickerWidget extends TextField
     /**
      * Gibt den Style des gewählen Icons zurück.
      *
-     * @param string $value
+     * @param string|null $value
      *
      * @return string
      */
     public function getIconStyle(string $value): string
     {
-        $iconStyle = StringUtil::specialchars($value);
+        $iconStyle = StringUtil::specialchars($value ?? '');
         $iconStyle = \str_replace('fa-', '', $iconStyle);
         $iconStyle = \explode(' ', $iconStyle);
 
